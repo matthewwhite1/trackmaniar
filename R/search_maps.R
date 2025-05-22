@@ -1,8 +1,10 @@
+### TODO: Make possible to search for multiple ids - may have to change away from modify_url
+
 #' @export
 search_maps <- function(params, fields) {
   # Define fields if not provided
   if (missing(fields)) {
-    fields <- "Name,MapId,Authors[],MapType,Environment,Vehicle,Difficulty"
+    fields <- "Name,MapId,Authors[],MapType,Difficulty"
     fields <- paste0(fields, ",AwardCount,UploadedAt,OnlineWR[]")
     fields <- paste0(fields, ",DownloadCount,Tags[]")
   }
@@ -28,17 +30,27 @@ search_maps <- function(params, fields) {
   # Split author column up if it exists
   if (stringr::str_detect(fields, "Authors")) {
     df <- df |>
-      tibble::add_column(AuthorId = paste(df$Authors[[1]]$User$UserId, collapse = " "), .after = 1) |>
-      tibble::add_column(AuthorName = paste(df$Authors[[1]]$User$Name, collapse = " "), .after = 2) |>
-      tibble::add_column(AuthorRole = paste(df$Authors[[1]]$Role, collapse = " "), .after = 3) |>
+      tibble::add_column(AuthorId = paste(df$Authors[[1]]$User$UserId, collapse = ", "), .after = 1) |>
+      tibble::add_column(AuthorName = paste(df$Authors[[1]]$User$Name, collapse = ", "), .after = 2) |>
+      tibble::add_column(AuthorRole = paste(df$Authors[[1]]$Role, collapse = ", "), .after = 3) |>
       dplyr::select(-Authors)
   }
 
-  print(colnames(df))
   # Edit WR columns
   if (stringr::str_detect(fields, "OnlineWR")) {
+    df$WRDisplayName <- df$OnlineWR$DisplayName
+    df$WRRecordTime <- df$OnlineWR$RecordTime
     df <- df |>
-      dplyr::select(-c("OnlineWR$AccountId", "OnlineWR$User$Name"))
+      dplyr::select(-OnlineWR)
+  }
+
+  # Split tags column up if it exists
+  if (stringr::str_detect(fields, "Tags")) {
+    df$TagId <- paste(df$Tags[[1]]$TagId, collapse = ", ")
+    df$TagName <- paste(df$Tags[[1]]$Name, collapse = ", ")
+    df$TagColor <- paste(df$Tags[[1]]$Color, collapse = ", ")
+    df <- df |>
+      dplyr::select(-Tags)
   }
 
   return(df)
