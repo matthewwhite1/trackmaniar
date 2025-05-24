@@ -1,3 +1,14 @@
+#' Download a map's image and/or thumbnail
+#'
+#' @param id Integer: The MapId of the entry to get an image from
+#' @param position Numeric vector: The 0-based index of the image. Default is 0.
+#'   Can be a vector of multiple image indices
+#'
+#' @return Downloads map image png to working directory
+#'
+#' @examples
+#' # Download the image from Training - 01
+#' download_image(id = 1984)
 #' @export
 download_image <- function(id, position = 0) {
   for (pos in position) {

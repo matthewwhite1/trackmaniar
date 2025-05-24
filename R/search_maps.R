@@ -1,5 +1,27 @@
 ### TODO: Make possible to search for multiple ids - may have to change away from modify_url
 
+#' Search maps
+#'
+#' @param params A named list of input parameters. The full list of parameters
+#'   can be seen in the source section
+#' @param fields A string of output parameters. The full list of parameters
+#'   can be seen in the source section. See the example for how this should
+#'   be structured
+#'
+#' @details If no fields are provided, the default fields in the output are
+#'   Name, MapId, Authors, MapType, Difficulty, AwardCount, UploadedAt,
+#'   OnlineWR, DownloadCount, and Tags
+#'
+#' @return A dataframe with columns being the output parameters listed in
+#'   the fields argument
+#'
+#' @source \url{https://api2.mania.exchange/search?version=2&s=2&q=Search\%20Maps}
+#'
+#' @examples
+#' # Search 50 Ubisoft Nadeo maps
+#' params <- list(author = "Ubisoft Nadeo", count = 50)
+#' fields <- "Name,MapId,Authors[],AwardCount,Difficulty"
+#' search_maps(params = params, fields = fields)
 #' @export
 search_maps <- function(params, fields) {
   # Define fields if not provided

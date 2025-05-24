@@ -1,12 +1,12 @@
-#' Get all map types
+#' Get all titlepacks
 #'
-#' @return A character vector of maptypes in descending order of occurrence
-#'   count
+#' @return A character vector of titlepacks in descending order of
+#'   occurrence count
 #'
 #' @export
-get_maptypes <- function() {
+get_titlepacks <- function() {
   # Define url
-  url <- "https://trackmania.exchange/api/meta/maptypes"
+  url <- "https://trackmania.exchange/api/meta/titlepacks"
 
   # Send GET request
   response <- httr::GET(url, httr::add_headers(`User-Agent` = "trackmaniar/1.0"))

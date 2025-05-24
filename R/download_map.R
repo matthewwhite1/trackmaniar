@@ -1,3 +1,13 @@
+#' Downloads a map
+#'
+#' @param ids Numeric vector: The MapId of the map. Can be a vector of multiple
+#'   MapIds
+#'
+#' @return Downloads map to working directory
+#'
+#' @examples
+#' # Download Training - 01
+#' download_map(ids = 1984)
 #' @export
 download_map <- function(ids) {
   for (id in ids) {

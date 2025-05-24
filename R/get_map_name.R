@@ -1,3 +1,13 @@
+#' Get the name of a map from a MapId
+#'
+#' @param ids Numeric vector: The MapId of the map. Can be a vector of multiple
+#'   MapIds
+#'
+#' @return A character vector containing the map name(s)
+#'
+#' @examples
+#' # Get the the map name from id 1984
+#' get_map_name(ids = 1984)
 #' @export
 get_map_name <- function(ids) {
   names <- character()
