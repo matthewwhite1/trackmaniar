@@ -30,15 +30,27 @@ search_maps <- function(params, fields) {
     fields <- paste0(fields, ",AwardCount,UploadedAt,OnlineWR[]")
     fields <- paste0(fields, ",DownloadCount,Tags[]")
   }
-  params <- as.list(params)
   params$fields <- fields
 
   # Define url
   base_url <- "https://trackmania.exchange/api/maps?"
-  full_url <- httr::modify_url(base_url, query = params)
+  param_names <- names(params)
+  for (i in seq_along(params)) {
+    for (j in seq_along(params[[i]])) {
+      base_url <- paste0(base_url, param_names[i], "=", params[[i]][j])
+      if (j != length(params[[i]])) {
+        base_url <- paste0(base_url, "&")
+      }
+    }
+    if (i != length(params)) {
+      base_url <- paste0(base_url, "&")
+    }
+  }
+  base_url <- stringr::str_replace(base_url, " ", "%20")
+  print(base_url)
 
   # Send GET request
-  response <- httr::GET(url = full_url, httr::add_headers(`User-Agent` = "trackmaniar/1.0"))
+  response <- httr::GET(url = base_url, httr::add_headers(`User-Agent` = "trackmaniar/1.0"))
 
   # Check the result
   if (httr::status_code(response) == 200) {
